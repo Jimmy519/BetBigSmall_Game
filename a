@@ -1,0 +1,157 @@
+def bet(principal):
+    bet = input("Please input the bet amount:")
+    if (int(principal) - int(bet)) < 0:
+        print ("You dont have enough money, please add money or leave")
+        val = input("Type 1 to buy-in or Type 2 to leave")
+        if val == "1":
+            bet = input("Please input the bet amount:")
+        elif val == "2":
+            print ("Thank you for joining. Goodbye!")
+            quit()
+        else:
+            print ("invalid number")
+    return int(bet)
+    
+def betBigSmall():
+    betBigSmall = input("Please bet Big / Small:")
+    return betBigSmall
+    
+dice = {
+
+    1: (
+
+        "┌───┐",
+
+        "│　　　│",
+
+        "│　●　│",
+
+        "│      │",
+
+        "└───┘",
+
+        ),
+
+    2: (
+
+        "┌───┐",
+
+        "│●　　│",
+
+        "│　　　│",
+
+        "│　　●│",
+
+        "└───┘",
+
+        ),
+
+    3: (
+
+        "┌───┐",
+
+        "│●　　│",
+
+        "│　●　│",
+
+        "│　　●│",
+
+        "└───┘",
+
+        ),
+
+    4: (
+
+        "┌───┐",
+
+        "│●　●│",
+
+        "│　　　│",
+
+        "│●　●│",
+
+        "└───┘",
+
+        ),
+
+    5: (
+
+        "┌───┐",
+
+        "│●　●│",
+
+        "│　●　│",
+
+        "│●　●│",
+
+        "└───┘",
+
+        ),
+
+    6: (
+
+        "┌───┐",
+
+        "│●　●│",
+
+        "│●　●│",
+
+        "│●　●│",
+
+        "└───┘",
+
+        ),
+
+}
+
+def getDiceTUI(diceNum):
+    for height in range(5):
+        print (dice[diceNum][height])
+        
+import random
+
+def rollDice():
+    rollResults = []
+
+    for num in range(3):
+        roll = random.randint(1, 6)
+        rollResults.append(roll)
+
+    for diceNum in rollResults:
+        getDiceTUI(diceNum)
+        
+    return rollResults
+    
+def compareResults(principal, bet, betBigSmall, rollResults):
+    sum_of_roll_results = sum(rollResults)
+    print ("Sum of dice: " + str(sum_of_roll_results))
+    checkTriple = all(element == rollResults[0] for element in rollResults)
+    if checkTriple == True:
+        print("Triple. Dealer wins")
+        principal = principal - bet
+    elif sum_of_roll_results >= 11:
+        print ("Opened big")
+        if betBigSmall == "Big":
+            principal = principal + bet
+        else:
+            principal = principal - bet
+    else:
+        print ("Opened small")
+        if betBigSmall == "Small":
+            principal = principal + bet
+        else:
+            principal = principal - bet
+    return principal
+    
+def gamble(principal):
+    while principal>0:
+#         buy_in = buy_in(principal)
+        betmoney = bet(principal)
+        betBS = betBigSmall()
+        rollResults = rollDice()
+        principal = compareResults(principal,betmoney,betBS,rollResults)
+        print ("You now have: " + str(principal) + "\n")
+    print ("You have lost all your money")
+
+principal = 1000
+gamble(principal)
